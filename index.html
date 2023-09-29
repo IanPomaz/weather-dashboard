@@ -1,0 +1,53 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Dashboard</title>
+</head>
+<body>
+    <nav>
+        <h1>Weather Dashboard</h1>
+    </nav>
+
+    <div class="container">
+        <main>
+            <h4>Search For a City</h4>
+        
+        </main>
+    </div>
+
+    <script src="./assets/js/script.js"></script>
+    <input type="text" id="searchbox" placeholder="Enter location">
+    <button onclick="makeWeatherRequest()">Get Weather</button>
+    <div id="weatherData"></div>
+    <script>
+        function buildString() {
+    let inputValue = document.getElementById("searchbox").value;
+    var apiKey = "ebe55feb2f42682c41261b04bdd5e0f7";
+    var urlString = `https://api.openweathermap.org/data/2.5/weather?q=${inputValue}&appid=${apiKey}`;
+
+    return urlString;
+}
+
+function makeWeatherRequest() {
+    var weatherURL = buildString();
+    fetch(weatherURL)
+        .then(response => response.json())
+        .then(data => {
+            const weatherDataElement = document.getElementById("weatherData");
+            
+            weatherDataElement.innerHTML = `
+                <h2>Weather in ${data.name}, ${data.sys.country}</h2>
+                <p>Temperature: ${data.main.temp}°C</p>
+                <p>Description: ${data.weather[0].description}</p>
+            `;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
+    </script>
+    
+</body>
+</html>
